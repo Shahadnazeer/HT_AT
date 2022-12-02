@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using RestSharp;
 using System.Net;
+using System.Text.Json.Nodes;
 
 namespace HT_AT
 {
@@ -35,8 +36,7 @@ namespace HT_AT
         [Test]
         public void Test3()
         {
-            var jsonobject = JsonConvert.DeserializeObject<List <string>>(restResponse.Content);
-
+            var jsonobject = JsonConvert.DeserializeObject<List<Object>>(restResponse.Content);
             Assert.True(jsonobject.Count == 10);
         }
 
