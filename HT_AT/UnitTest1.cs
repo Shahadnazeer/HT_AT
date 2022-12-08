@@ -1,6 +1,8 @@
+using HT_AT.Models;
 using Newtonsoft.Json;
 using RestSharp;
 using System.Net;
+using System.Reflection.Metadata;
 using System.Text.Json.Nodes;
 
 namespace HT_AT
@@ -22,22 +24,32 @@ namespace HT_AT
 
 
         [Test]
-        public void Test1()
+        public void statusCodeTest()
         {
-            Assert.True(restResponse.StatusCode==HttpStatusCode.OK);
+            var expectedResult = restResponse.StatusCode;
+            var actualResult = HttpStatusCode.OK;
+
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
         [Test]
-        public void Test2()
+        public void responseHeaderTest()
         {
-            Assert.True(restResponse.ContentType == "application/json");
+            var contentHeaders = restResponse.ContentHeaders.ToList();
+            var expectedResult = contentHeaders.First()?.Value.ToString();
+            var actualResult = "application/json; charset=utf-8";
+
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
         [Test]
-        public void Test3()
+        public void responseBodyTest()
         {
-            var jsonobject = JsonConvert.DeserializeObject<List<Object>>(restResponse.Content);
-            Assert.True(jsonobject.Count == 10);
+            var jsonobject = JsonConvert.DeserializeObject<List<User>>(restResponse.Content);
+            var expectedResult = 10;
+            var actualResult = jsonobject.Count();
+
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
     }
